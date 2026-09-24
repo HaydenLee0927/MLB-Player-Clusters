@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Batter Graph</title>
+  <meta name="description" content="A network of MLB hitters linked by how similar their contact quality, spray, launch and plate discipline are, built from Statcast data." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/force-graph@1.47.4/dist/force-graph.min.js"></script>
+</head>
+<body class="graph-page">
+  <div id="graph"></div>
+
+  <header id="toolbar">
+    <h1>Batter Graph <span id="meta"></span></h1>
+    <nav class="pages">
+      <a href="index.html">Pitchers</a>
+      <a href="batters.html" aria-current="page">Batters</a>
+      <a href="matchups.html">Matchups</a>
+    </nav>
+    <input id="search" type="search" placeholder="Search a batter…" list="player-names" autocomplete="off" />
+    <datalist id="player-names"></datalist>
+    <button id="tuner-toggle" type="button">Tune similarity</button>
+    <label class="toggle"><input id="labels-toggle" type="checkbox" /> Always show names</label>
+  </header>
+
+  <aside id="legend"><h2>Clusters</h2><ul id="cluster-list"></ul></aside>
+
+  <aside id="tuner" hidden>
+    <button id="tuner-close" class="close" aria-label="Close">×</button>
+    <div id="tuner-body"></div>
+  </aside>
+
+  <aside id="panel" hidden>
+    <button id="panel-close" class="close" aria-label="Close">×</button>
+    <div id="panel-body"></div>
+  </aside>
+
+  <script type="module" src="js/batters.js"></script>
+</body>
+</html>

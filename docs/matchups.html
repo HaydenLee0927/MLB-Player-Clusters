@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matchup Hot Zones</title>
+  <meta name="description" content="Hot/cold chart of batter clusters against pitcher clusters, and a test of whether similar batters perform alike against the same kind of pitcher." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="doc-page">
+  <header id="toolbar" class="static">
+    <h1>Matchup Hot Zones <span id="meta"></span></h1>
+    <nav class="pages">
+      <a href="index.html">Pitchers</a>
+      <a href="batters.html">Batters</a>
+      <a href="matchups.html" aria-current="page">Matchups</a>
+    </nav>
+    <button id="tuner-toggle" type="button">Tune similarity</button>
+  </header>
+
+  <main id="matchups">
+    <section class="card controls">
+      <label>Metric
+        <select id="metric">
+          <option value="xwoba">xwOBA</option>
+          <option value="woba">wOBA</option>
+          <option value="rv100">Run value / 100 pitches</option>
+          <option value="whiff">Whiff %</option>
+          <option value="k">K %</option>
+        </select>
+      </label>
+      <label>Platoon
+        <select id="platoon">
+          <option value="all">All matchups</option>
+          <option value="opp">Opposite hand only</option>
+          <option value="same">Same hand only</option>
+        </select>
+      </label>
+      <label>Color by
+        <select id="mode">
+          <option value="expected">Result vs expected</option>
+          <option value="raw">Result vs league average</option>
+        </select>
+      </label>
+      <label class="check"><input id="shrink" type="checkbox" checked /> Shrink small samples</label>
+      <label class="slider inline"><span>Shrinkage k</span><output id="k-out"></output>
+        <input id="k" type="range" min="0" max="800" step="10" /></label>
+    </section>
+
+    <section class="card">
+      <h2>Batter clusters vs pitcher clusters</h2>
+      <p class="hint" id="heat-hint"></p>
+      <div class="scroll-x"><table id="heatmap" class="heat"></table></div>
+      <div id="heat-legend" class="heat-legend"></div>
+    </section>
+
+    <section class="card">
+      <h2>Do similar batters perform alike against the same pitcher cluster?</h2>
+      <p class="hint">
+        Each dot is one batter against one pitcher cluster. It shows how that batter did compared with
+        expectation (<b>y</b>) against how the batters most similar to them did against the same cluster
+        (<b>x</b>, weighted by similarity, leaving the batter out). Expectation already accounts for
+        the batter's overall talent and each pitcher's overall quality, so what's left is the
+        <em>matchup</em> effect. If similar batters really react alike, the dots trend upward and
+        <b>r</b> beats the random-batter baseline.
+      </p>
+      <label class="slider inline"><span>Min sample per dot</span><output id="min-out"></output>
+        <input id="min-den" type="range" min="10" max="300" step="5" value="40" /></label>
+      <div id="hypothesis"></div>
+    </section>
+
+    <section class="card">
+      <h2>Batter lookup</h2>
+      <p class="hint">
+        Pick a batter to see their hot/cold strip across pitcher clusters, and the pitchers they faced most.
+        Add a pitcher (or click a row) to see how the estimate for that single matchup is built. Each step
+        falls back to the one above it when its own sample is small.
+      </p>
+      <div class="lookup-controls">
+        <input id="batter-search" type="search" placeholder="Batter…" list="batter-names" autocomplete="off" />
+        <input id="pitcher-search" type="search" placeholder="Pitcher (optional)…" list="pitcher-names" autocomplete="off" />
+        <datalist id="batter-names"></datalist>
+        <datalist id="pitcher-names"></datalist>
+      </div>
+      <div id="batter-view"></div>
+    </section>
+  </main>
+
+  <aside id="tuner" hidden>
+    <button id="tuner-close" class="close" aria-label="Close">×</button>
+    <p class="tuner-note">Changes here re-cluster both groups and update every chart on this page live.
+      They are shared with the Pitchers and Batters pages.</p>
+    <div id="tuner-body"></div>
+  </aside>
+
+  <div id="tip" role="tooltip" hidden></div>
+
+  <script type="module" src="js/matchups.js"></script>
+</body>
+</html>
