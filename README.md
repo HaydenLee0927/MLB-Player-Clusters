@@ -64,8 +64,24 @@ outweighs the others just because it has more columns. Similarity is `exp(-d² /
 distance, where σ is the median distance to each player's k-th nearest neighbor. Each player links to
 their top-k matches that are at or above the minimum similarity, and always to their single closest
 match. Louvain then clusters the graph (the resolution setting controls how many clusters you get).
-`config.WEIGHTS`, `config.BATTER_WEIGHTS`, `K_NEIGHBORS`, `MIN_SIMILARITY` and `LOUVAIN_RESOLUTION`
-are the defaults the tuner starts from and the values **Reset** returns to.
+`config.WEIGHTS` / `FEATURE_WEIGHTS`, `config.BATTER_WEIGHTS` / `BATTER_FEATURE_WEIGHTS`, `GRAPH` and
+`BATTER_GRAPH` are the defaults the tuner starts from and the values **Reset** returns to.
+
+**How the default weights were set.** The weights were not picked by hand. Starting from every weight at 1,
+a coordinate search changed block and feature weights (range 0.25–3) and k / resolution / min similarity
+to maximize **pair AUC**: the probability that two players in the same cluster are closer than two players
+in different clusters. Each candidate was re-clustered and then scored. The number of clusters was held
+near its starting value (pitchers 10–12, batters 6–8), so the score could not be raised just by adding
+clusters. Weights were fit on March–June 2025 and checked on July–October 2025:
+
+| Holdout (Jul–Oct) | pair AUC | silhouette | top-10 comps in same cluster |
+|---|---|---|---|
+| Pitchers: all weights 1 → fit | 0.740 → 0.892 | 0.043 → 0.166 | 62% → 78% |
+| Batters: all weights 1 → fit | 0.793 → 0.912 | 0.076 → 0.207 | 70% → 91% |
+
+**Clusters are not named in advance.** The legend shows *Cluster N* plus the three features where that
+cluster's average differs most from the league (z-scores, among weighted features), e.g.
+"Slider usage ↑ · Sweeper usage ↓". What a cluster *means* is read off those profiles.
 
 ### Matchup page (rough draft)
 
