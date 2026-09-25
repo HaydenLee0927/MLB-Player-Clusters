@@ -220,3 +220,5 @@ model (4) if that version shows promise.
 - [ ] **UMAP seed layout**: start the force layout from a 2D UMAP embedding so the global structure is easier to read.
 - [ ] **Movement plot in the panel**: a small HB-vs-IVB scatter of each pitch, colored by pitch type.
 - [ ] **Edge explanations**: show which features drive a given similarity.
+
+Built by: Hayden Lee
